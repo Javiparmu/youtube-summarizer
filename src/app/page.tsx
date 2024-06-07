@@ -150,7 +150,7 @@ export default function Home() {
             ></iframe>
           </div>
           <Select value={format} onValueChange={(value) => setFormat(value)}>
-            <SelectTrigger className="w-[180px] mt-6 ml-0.5">
+            <SelectTrigger className="w-[180px] mt-6 ml-0.5 font-medium">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
