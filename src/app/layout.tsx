@@ -8,6 +8,12 @@ const fontSans = FontSans({
   variable: "--font-sans",
 })
 
+export const metadata = {
+  title: "Youtube Summarizer",
+  description: "Tool to create SEO optimized articles from youtube videos",
+  url: "https://youtube-summarizer.vercel.app",
+}
+
 interface RootLayoutProps {
   children: React.ReactNode
 }
