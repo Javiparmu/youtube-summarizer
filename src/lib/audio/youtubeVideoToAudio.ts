@@ -39,8 +39,8 @@ const uploadToCloudinary = async (filePath: string) => {
 
 export const youtubeVideoToAudio = async (url: string) => {
   const audioName = `${crypto.getRandomValues(new Uint32Array(1))[0]}.mp3`;
-  const outputDir = path.join(process.cwd(), 'public', 'youtube-audio');
-  const outputPath = process.env.NODE_ENV === 'test' ? path.join(outputDir, audioName) : `/tmp/${audioName}`;
+  const outputDir = '/tmp'
+  const outputPath = path.join(outputDir, audioName);
 
   try {
     ensureDirectoryExistence(outputDir);
