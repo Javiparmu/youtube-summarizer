@@ -84,7 +84,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen max-w-screen flex-col items-center justify-center p-24 overflow-hidden">
+    <main className="flex min-h-screen max-w-screen flex-col items-center justify-center p-8 md:p-16 lg:20 xl:p-24">
       {!summary ? (
         <Card>
           <CardHeader>
@@ -102,16 +102,14 @@ export default function Home() {
           </CardFooter>
         </Card>
       ) : (
-        <div className="w-[900px] overflow-y-auto">
+        <div className="xl:w-[900px] overflow-y-auto">
           <Button onClick={() => setSummary(undefined)}>
             <ArrowLeftIcon className="w-5 h-5 mr-1" />
             Go back
           </Button>
           <div className="video-container mt-8">
             <iframe
-              className="rounded-lg"
-              width="450"
-              height="250"
+              className="rounded-lg w-full sm:w-[450px] aspect-video"
               src={url.replace("watch?v=", "embed/")}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
