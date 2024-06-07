@@ -44,7 +44,7 @@ export default function Home() {
   const [format, setFormat] = useState<string>("article")
 
   const markdownTextAreaRef = useRef<HTMLTextAreaElement>(null)
-  const transcrptionAreaRef = useRef<HTMLTextAreaElement>(null)
+  const transcriptionAreaRef = useRef<HTMLTextAreaElement>(null)
 
   const onSummarize = async () => {
     try {
@@ -77,9 +77,9 @@ export default function Home() {
       markdownTextAreaRef.current.style.height = `${markdownTextAreaRef.current.scrollHeight}px`;
     }
 
-    if (transcrptionAreaRef.current) {
-      transcrptionAreaRef.current.style.height = "1px";
-      transcrptionAreaRef.current.style.height = `${transcrptionAreaRef.current.scrollHeight}px`;
+    if (transcriptionAreaRef.current) {
+      transcriptionAreaRef.current.style.height = "1px";
+      transcriptionAreaRef.current.style.height = `${transcriptionAreaRef.current.scrollHeight}px`;
     }
   }, [format])
 
@@ -186,7 +186,7 @@ export default function Home() {
             />
           ) : (
             <textarea
-              ref={transcrptionAreaRef}
+              ref={transcriptionAreaRef}
               className="resize-none w-full mt-6 p-4 bg-gray-100 rounded-lg"
               value={transcription}
               readOnly
