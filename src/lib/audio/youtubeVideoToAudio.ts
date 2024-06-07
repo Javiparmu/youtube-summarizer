@@ -38,21 +38,14 @@ const uploadToCloudinary = async (filePath: string) => {
 };
 
 export const youtubeVideoToAudio = async (url: string) => {
-  console.log('Processing video:', url);
   const audioName = `${crypto.getRandomValues(new Uint32Array(1))[0]}.mp3`;
   const outputDir = path.join(process.cwd(), 'public', 'youtube-audio');
-  const outputPath = path.join(outputDir, audioName);
-
-  console.log('Output path:', outputPath);
+  const outputPath = process.env.NODE_ENV === 'development' ? path.join(outputDir, audioName) : `/tmp/${audioName}`;
 
   try {
     ensureDirectoryExistence(outputDir);
 
-    console.log('Downloading audio...');
-
     await downloadAudio(url, outputPath);
-
-    console.log('Audio downloaded:', outputPath);
     
     // const audioUrl = await uploadToCloudinary(outputPath);
     return outputPath;
@@ -65,7 +58,6 @@ export const youtubeVideoToAudio = async (url: string) => {
 export const summarizeVideo = async (url: string) => {
   try {
     const audioUrl = await youtubeVideoToAudio(url);
-    console.log('Audio URL:', audioUrl);
     return audioUrl;
   } catch (error) {
     console.error('Error summarizing video:', error);
