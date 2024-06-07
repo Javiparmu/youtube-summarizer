@@ -18,7 +18,7 @@ const systemMessage: ChatCompletionMessageParam = {
 
 export const summarizeTranscription = async (transcription: string) => {
   const summary = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
+    model: "gpt-4o-2024-05-13",
     messages: [
       systemMessage,
       { role: "user", content: transcription },
