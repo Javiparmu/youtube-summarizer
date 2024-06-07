@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { summarizeVideo } from "./actions/summarize-video";
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ArrowLeftIcon } from "lucide-react";
