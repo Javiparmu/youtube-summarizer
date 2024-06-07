@@ -148,14 +148,14 @@ const H2Component = ({ children }: { children?: ReactNode }) => (
 );
 
 const H3Component = ({ children }: { children?: ReactNode }) => (
-  <h5 className="text-xl font-medium mt-6 mb-3">{children}</h5>
+  <h5 className="text-xl font-semibold mt-6 mb-3">{children}</h5>
 );
 
 const H4Component = ({ children }: { children?: ReactNode }) => (
-  <h6 className="text-lg font-medium mt-4 mb-2">{children}</h6>
+  <h6 className="text-lg font-semibold mt-4 mb-2">{children}</h6>
 );
 
 const TitleSpanComponent = ({ children }: { children?: ReactNode }) => (
-  <span className="font-medium">{children}</span>
+  <span className="font-bold">{children}</span>
 );
 
