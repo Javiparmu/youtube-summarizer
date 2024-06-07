@@ -4,13 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { summarizeVideo } from "./actions/summarize-video";
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ArrowLeftIcon } from "lucide-react";
 import { errorToast } from "@/lib/toast";
 import { Toaster } from "@/components/ui/toaster";
+import { getAudioFromYoutubeUrl } from "./actions/getAudioFromYoutubeUrl";
+import { transcriptAudio } from "./actions/trascriptAudio";
+import { getSeoOptimizedArticle } from "./actions/getSeoOptimizedArticle";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const forbiddenTags = [
   'img',
@@ -36,20 +40,49 @@ export default function Home() {
   const [url, setUrl] = useState<string>("")
   const [summary, setSummary] = useState<string>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [loadingText, setLoadingText] = useState<string>("")
+  const [transcription, setTranscription] = useState<string>("")
+  const [format, setFormat] = useState<string>("article")
+
+  const markdownTextAreaRef = useRef<HTMLTextAreaElement>(null)
+  const transcrptionAreaRef = useRef<HTMLTextAreaElement>(null)
 
   const onSummarize = async () => {
     try {
       setIsLoading(true)
 
-      const summary = await summarizeVideo(url)
+      setLoadingText("Converting video to audio...")
+      const audioPath = await getAudioFromYoutubeUrl(url)
+
+      setLoadingText("Creating transcription...")
+      const transcription = await transcriptAudio(audioPath)
+      setTranscription(transcription)
+
+      setLoadingText("Creating SEO optimized article...")
+      const summary = await getSeoOptimizedArticle(transcription)
+
       setSummary(sanitizeMarkdown(summary as string))
 
       setIsLoading(false)
+      setLoadingText("")
     } catch (error) {
       setIsLoading(false)
+      setLoadingText("")
       errorToast("An error occurred while summarizing the video.")
     }
   }
+
+  useEffect(() => {
+    if (markdownTextAreaRef.current) {
+      markdownTextAreaRef.current.style.height = "1px";
+      markdownTextAreaRef.current.style.height = `${markdownTextAreaRef.current.scrollHeight}px`;
+    }
+
+    if (transcrptionAreaRef.current) {
+      transcrptionAreaRef.current.style.height = "1px";
+      transcrptionAreaRef.current.style.height = `${transcrptionAreaRef.current.scrollHeight}px`;
+    }
+  }, [format])
 
   if (isLoading) {
     return (
@@ -74,11 +107,12 @@ export default function Home() {
           <span className="sr-only">Loading...</span>
         </div>
         <span className="flex flex-col text-center font-medium text-gray-600">
-          Summarizing video...
+          {loadingText}
           <span className="font-medium text-gray-600">
             This should take around 1 minute per 10 minutes of video.
           </span>
         </span>
+        <Toaster />
       </main>
     )
   }
@@ -115,21 +149,50 @@ export default function Home() {
               allowFullScreen
             ></iframe>
           </div>
-          <Markdown
-            className="max-w-full text-wrap break-words"
-            disallowedElements={forbiddenTags}
-            components={{
-              h1: H1Component,
-              h2: H2Component,
-              h3: H3Component,
-              h4: H4Component,
-              h5: TitleSpanComponent,
-              h6: TitleSpanComponent,
-            }}
-            remarkPlugins={[remarkGfm]}
-          >
-            {summary}
-          </Markdown>
+          <Select value={format} onValueChange={(value) => setFormat(value)}>
+            <SelectTrigger className="w-[180px] mt-6 ml-0.5">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Format</SelectLabel>
+                <SelectItem value="article">Article</SelectItem>
+                <SelectItem value="markdown">Markdown</SelectItem>
+                <SelectItem value="transcription">Transcription</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          {format === 'article' ? (
+            <Markdown
+              className="max-w-full text-wrap break-words"
+              disallowedElements={forbiddenTags}
+              components={{
+                h1: H1Component,
+                h2: H2Component,
+                h3: H3Component,
+                h4: H4Component,
+                h5: TitleSpanComponent,
+                h6: TitleSpanComponent,
+              }}
+              remarkPlugins={[remarkGfm]}
+            >
+              {summary}
+            </Markdown>
+          ) : format === 'markdown' ? (
+            <textarea
+              ref={markdownTextAreaRef}
+              className="resize-none w-full mt-6 p-4 bg-gray-100 rounded-lg"
+              value={summary}
+              readOnly
+            />
+          ) : (
+            <textarea
+              ref={transcrptionAreaRef}
+              className="resize-none w-full mt-6 p-4 bg-gray-100 rounded-lg"
+              value={transcription}
+              readOnly
+            />
+          )}
         </div>
       )}
       <Toaster />

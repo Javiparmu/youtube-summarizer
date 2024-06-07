@@ -6,7 +6,7 @@ const openai = new OpenAI({
   project: process.env.OPENAI_PROJECT_ID,
 })
 
-export const transcriptAudio = async (audioPath: string) => {
+export const transcriptAudioWithOpenAI = async (audioPath: string) => {
   const transcription = await openai.audio.transcriptions.create({
     file: fs.createReadStream(audioPath),
     model: "whisper-1",
