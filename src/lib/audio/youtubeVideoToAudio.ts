@@ -42,25 +42,14 @@ export const youtubeVideoToAudio = async (url: string) => {
   const outputDir = '/tmp'
   const outputPath = path.join(outputDir, audioName);
 
-  try {
-    ensureDirectoryExistence(outputDir);
+  ensureDirectoryExistence(outputDir);
 
-    await downloadAudio(url, outputPath);
-    
-    // const audioUrl = await uploadToCloudinary(outputPath);
-    return outputPath;
-  } catch (error) {
-    console.error('Error during processing:', error);
-    throw error;
-  }
+  await downloadAudio(url, outputPath);
+  
+  return outputPath;
 };
 
 export const summarizeVideo = async (url: string) => {
-  try {
-    const audioUrl = await youtubeVideoToAudio(url);
-    return audioUrl;
-  } catch (error) {
-    console.error('Error summarizing video:', error);
-    throw error;
-  }
+  const audioUrl = await youtubeVideoToAudio(url);
+  return audioUrl;
 };

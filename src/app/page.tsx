@@ -46,6 +46,7 @@ export default function Home() {
 
       setIsLoading(false)
     } catch (error) {
+      setIsLoading(false)
       errorToast("An error occurred while summarizing the video.")
     }
   }
