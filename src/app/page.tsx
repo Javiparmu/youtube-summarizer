@@ -25,6 +25,13 @@ const forbiddenTags = [
   'html',
 ];
 
+const sanitizeMarkdown = (text: string) => {
+  return text
+    .replace(/\u00A0/g, ' ')
+    .replace(/\u200B/g, '')
+    .replace(/^[ \t]+/gm, '');
+};
+
 export default function Home() {
   const [url, setUrl] = useState<string>("")
   const [summary, setSummary] = useState<string>()
@@ -35,7 +42,7 @@ export default function Home() {
       setIsLoading(true)
 
       const summary = await summarizeVideo(url)
-      setSummary(summary as string)
+      setSummary(sanitizeMarkdown(summary as string))
 
       setIsLoading(false)
     } catch (error) {
