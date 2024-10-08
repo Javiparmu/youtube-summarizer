@@ -1,7 +1,16 @@
 'use server'
 
-import { summarizeTranscription } from '@/lib/text/summarizeTranscription';
+export const getSeoOptimizedArticle = async (transcription: string): Promise<string> => {
+  console.log('getSeoOptimizedArticle', process.env.API_URL)
+  const response = await fetch(`${process.env.API_URL}/seo-article`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ text: transcription }),
+  })
 
-export const getSeoOptimizedArticle = async (transcription: string) => {
-  return summarizeTranscription(transcription);
+  const summary = await response.json()
+
+  return summary.text
 }

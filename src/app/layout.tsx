@@ -2,6 +2,7 @@ import "@/app/globals.css"
 import { Inter as FontSans } from "next/font/google"
 
 import { cn } from "@/lib/utils"
+import { Toaster } from "@/components/ui/toaster"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -28,7 +29,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontSans.variable
         )}
       >
-        {children}
+        <main className="flex flex-col gap-2 min-h-screen items-center justify-center p-24">
+          {children}
+          <Toaster />
+        </main>
       </body>
     </html>
   )

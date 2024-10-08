@@ -66,9 +66,9 @@
   }
 }
 
-.markdown > * {
+/* .markdown > * {
   all: revert;
-}
+} */
 
 @layer base {
   * {
@@ -79,8 +79,8 @@
   }
 }
 
-@layer components {
+/* @layer components {
   .markdown > * {
     all: revert;
   }
-}
+} */
