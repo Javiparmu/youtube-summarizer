@@ -16,6 +16,7 @@ type ToasterToast = ToastProps & {
   title?: React.ReactNode
   description?: React.ReactNode
   action?: ToastActionElement
+  leftIcon?: React.ReactNode
 }
 
 const actionTypes = {
@@ -147,13 +148,13 @@ function toast({ ...props }: Toast) {
 
   const update = (props: ToasterToast) =>
     dispatch({
-      type: "UPDATE_TOAST",
+      type: 'UPDATE_TOAST',
       toast: { ...props, id },
     })
-  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id })
+  const dismiss = () => dispatch({ type: 'DISMISS_TOAST', toastId: id })
 
   dispatch({
-    type: "ADD_TOAST",
+    type: 'ADD_TOAST',
     toast: {
       ...props,
       id,

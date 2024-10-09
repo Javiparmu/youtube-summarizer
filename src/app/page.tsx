@@ -36,7 +36,7 @@ export default function Home() {
       if (error) {
         setIsLoading(false)
         setLoadingText("")
-        errorToast(error)
+        errorToast({ title: 'Error', description: error })
         return
       }
 
@@ -45,7 +45,7 @@ export default function Home() {
       if (article.error) {
         setIsLoading(false)
         setLoadingText("")
-        errorToast(article.error)
+        errorToast({ title: 'Error', description: article.error })
         return
       }
 
@@ -62,7 +62,7 @@ export default function Home() {
     } catch (error) {
       setIsLoading(false)
       setLoadingText("")
-      errorToast("An error occurred while creating the article.")
+      errorToast({ title: 'Error', description: 'Please try again.' })
     }
   }
 

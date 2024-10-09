@@ -7,8 +7,9 @@ const youtubeCookie = 'YSC=VW73Ou8J1Lo; SOCS=CAISNQgDEitib3FfaWRlbnRpdHlmcm9udGV
 export const getYoutubeVideoTranscription = async (url: string) => {
   let videoInfo = null
   const videoId = ytdl.getVideoID(url)
+
   try {
-    videoInfo = await ytdl.getBasicInfo(videoId, {
+    videoInfo = await ytdl.getBasicInfo(url, {
       requestOptions: {
         headers: {
           cookie: youtubeCookie,
@@ -16,9 +17,9 @@ export const getYoutubeVideoTranscription = async (url: string) => {
         }
       }
     })
-  } catch (error) {
+  } catch (error: any) {
     return {
-      error: 'There was an error getting the video information. Please try again.'
+      error: error.message
     }
   }
 

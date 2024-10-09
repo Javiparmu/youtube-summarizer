@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import ArticleShowcase from '@/components/article-showcase';
 import { getArticleBySlug } from "@/app/actions/getArticleBySlug";
+import { Toaster } from "@/components/ui/toaster";
 
 interface ArticlePageProps {
 	params: {
@@ -30,6 +31,7 @@ const ArticlePage = async ({ params }: ArticlePageProps) => {
 				></iframe>
 			</div>
 			<ArticleShowcase article={article} />
+			<Toaster />
 		</div>
   )
 }
