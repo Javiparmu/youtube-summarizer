@@ -58,9 +58,6 @@ export default function Home() {
         transcription
       })
 
-      setIsLoading(false)
-      setLoadingText("")
-
       router.push(`/articles/${slug}`)
     } catch (error) {
       setIsLoading(false)

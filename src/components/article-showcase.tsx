@@ -45,7 +45,7 @@ const ArticleShowcase = ({ article }: ArticleShowcaseProps) => {
   }, [format])
 
   return (
-    <div className="max-w-full">
+    <div>
 			<Select value={format} onValueChange={(value) => setFormat(value)}>
 				<SelectTrigger className="w-[180px] mt-6 ml-0.5 font-medium">
 					<SelectValue />
@@ -61,7 +61,7 @@ const ArticleShowcase = ({ article }: ArticleShowcaseProps) => {
 			</Select>
 			{format === 'article' ? (
 				<Markdown
-					className="w-full text-wrap break-words prose mt-10"
+					className="w-full max-w-full text-wrap break-words prose mt-10"
 					disallowedElements={forbiddenTags}
 					remarkPlugins={[remarkGfm]}
 					rehypePlugins={[rehypeMathjax, [rehypeCallouts, { theme: 'github' }]]}

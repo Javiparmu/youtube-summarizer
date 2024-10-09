@@ -14,7 +14,7 @@ const ArticlePage = async ({ params }: ArticlePageProps) => {
 	const article = await getArticleBySlug(params.slug)
 
   return (
-    <div className="xl:w-[900px] overflow-y-auto">
+    <div className="xl:w-[800px] overflow-y-auto">
 			<Button asChild>
 				<Link href="/">
 					<ArrowLeftIcon className="w-5 h-5 mr-1" />
