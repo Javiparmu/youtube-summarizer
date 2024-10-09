@@ -19,7 +19,7 @@ export const getYoutubeVideoTranscription = async (url: string) => {
     })
   } catch (error: any) {
     return {
-      error: error.message
+      error: error.type + '--> ' + error.message
     }
   }
 
