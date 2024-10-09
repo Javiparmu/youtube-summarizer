@@ -32,9 +32,7 @@ export default function Home() {
       setIsLoading(true)
 
       setLoadingText("Getting video transcription...")
-      console.log(url)
       const transcription = await getYoutubeVideoTranscription(url)
-      console.log(transcription)
       if (!transcription) {
         setIsLoading(false)
         setLoadingText("")

@@ -1,7 +1,6 @@
 'use server'
 
 export const getSeoOptimizedArticle = async (transcription: string): Promise<string> => {
-  console.log('getSeoOptimizedArticle', process.env.API_URL)
   const response = await fetch(`${process.env.API_URL}/seo-article`, {
     method: 'POST',
     headers: {
