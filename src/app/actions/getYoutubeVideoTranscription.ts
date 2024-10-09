@@ -243,9 +243,7 @@ export const getYoutubeVideoTranscription = async (url: string) => {
   const videoId = ytdl.getVideoID(url)
 
   try {
-    const agent = ytdl.createAgent(youtubeCookies as any, {
-      localAddress: randomIpv6()
-    })
+    const agent = ytdl.createAgent(youtubeCookies as any)
     videoInfo = await ytdl.getBasicInfo(url, { agent })
   } catch (error: any) {
     return {
