@@ -37,9 +37,7 @@ export const getYoutubeVideoTranscription = async (url: string) => {
       maxRedirections: 0,
       localAddress: randomIpv6()
     })
-    videoInfo = await ytdl.getBasicInfo(url, {
-      agent
-    })
+    videoInfo = await ytdl.getBasicInfo(url)
   } catch (error: any) {
     return {
       error: error.type + '--> ' + error.message
