@@ -1,15 +1,31 @@
 'use server'
 
-export const getSeoOptimizedArticle = async (transcription: string): Promise<string> => {
+type GetSeoOptimizedArticleResponse = Promise<{
+  error: string;
+  article?: undefined;
+} | {
+  article: string;
+  error?: undefined;
+}>
+
+export const getSeoOptimizedArticle = async ({ title, transcription }: { title: string, transcription: string }): GetSeoOptimizedArticleResponse => {
   const response = await fetch(`${process.env.API_URL}/seo-article`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ text: transcription }),
+    body: JSON.stringify({ title, transcription }),
   })
 
-  const summary = await response.json()
+  if (!response.ok) {
+    return {
+      error: 'There was an error creating the SEO article. Please try again.',
+    }
+  }
 
-  return summary.text
+  const data = await response.json()
+
+  return {
+    article: data.text
+  }
 }

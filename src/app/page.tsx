@@ -32,24 +32,24 @@ export default function Home() {
       setIsLoading(true)
 
       setLoadingText("Getting video transcription...")
-      const transcription = await getYoutubeVideoTranscription(url)
-      if (!transcription) {
+      const { title, transcription, error } = await getYoutubeVideoTranscription(url)
+      if (error) {
         setIsLoading(false)
         setLoadingText("")
-        errorToast("An error occurred while transcribing the video.")
+        errorToast(error)
         return
       }
 
       setLoadingText("Creating SEO optimized article...")
-      const article = await getSeoOptimizedArticle(transcription)
-      if (!article) {
+      const article = await getSeoOptimizedArticle({ title: title!, transcription })
+      if (article.error) {
         setIsLoading(false)
         setLoadingText("")
-        errorToast("An error occurred while summarizing the video.")
+        errorToast(article.error)
         return
       }
 
-      const sanitizedArticle = sanitizeMarkdown(article)
+      const sanitizedArticle = sanitizeMarkdown(article.article!)
       const slug = extractArticleSlug(sanitizedArticle)
       await createArticle({
         slug,
