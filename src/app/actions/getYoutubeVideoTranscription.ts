@@ -6,12 +6,13 @@ const youtubeCookie = 'YSC=VW73Ou8J1Lo; SOCS=CAISNQgDEitib3FfaWRlbnRpdHlmcm9udGV
 
 export const getYoutubeVideoTranscription = async (url: string) => {
   let videoInfo = null
+  const videoId = ytdl.getVideoID(url)
   try {
-    const videoId = ytdl.getVideoID(url)
     videoInfo = await ytdl.getBasicInfo(videoId, {
       requestOptions: {
         headers: {
-          cookie: youtubeCookie
+          cookie: youtubeCookie,
+          'x-youtube-identity-token': 'QUFFLUhqbDhxWW96NDRvUVlCTEo1VUQ0V3IyZ3NOM2Q3d3w\u003d'
         }
       }
     })
