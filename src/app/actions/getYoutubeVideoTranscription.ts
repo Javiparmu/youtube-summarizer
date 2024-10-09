@@ -4,7 +4,7 @@ import ytdl from 'ytdl-core'
 
 export const getYoutubeVideoTranscription = async (url: string) => {
   const videoId = ytdl.getVideoID(url)
-  const videoInfo = await ytdl.getInfo(videoId)
+  const videoInfo = await ytdl.getBasicInfo(videoId)
   const language = videoInfo.player_response.captions?.playerCaptionsTracklistRenderer.captionTracks[0].languageCode
 
   if (!language) {
