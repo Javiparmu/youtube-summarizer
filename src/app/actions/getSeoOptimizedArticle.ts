@@ -8,13 +8,13 @@ type GetSeoOptimizedArticleResponse = Promise<{
   error?: undefined;
 }>
 
-export const getSeoOptimizedArticle = async ({ title, transcription }: { title: string, transcription: string }): GetSeoOptimizedArticleResponse => {
+export const getSeoOptimizedArticle = async ({ transcription }: { transcription: string }): GetSeoOptimizedArticleResponse => {
   const response = await fetch(`${process.env.API_URL}/seo-article`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ title, transcription }),
+    body: JSON.stringify({ transcription }),
   })
 
   if (!response.ok) {

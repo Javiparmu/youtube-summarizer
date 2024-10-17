@@ -12,6 +12,7 @@ import { getYoutubeVideoTranscription } from "./actions/getYoutubeVideoTranscrip
 import { createArticle } from "./actions/createArticle";
 import { extractArticleSlug } from "./domain/Article";
 import { useRouter } from "next/navigation";
+import { LanguageSelector } from "@/components/language-selector";
 
 const sanitizeMarkdown = (text: string) => {
   return text
@@ -24,6 +25,7 @@ export default function Home() {
   const [url, setUrl] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [loadingText, setLoadingText] = useState<string>("")
+  const [language, setLanguage] = useState<string>("en")
 
   const router = useRouter()
 
@@ -32,7 +34,7 @@ export default function Home() {
       setIsLoading(true)
 
       setLoadingText("Getting video transcription...")
-      const { title, transcription, error } = await getYoutubeVideoTranscription(url)
+      const { transcription, error } = await getYoutubeVideoTranscription(url, language)
       if (error) {
         setIsLoading(false)
         setLoadingText("")
@@ -41,7 +43,7 @@ export default function Home() {
       }
 
       setLoadingText("Creating SEO optimized article...")
-      const article = await getSeoOptimizedArticle({ title: title!, transcription })
+      const article = await getSeoOptimizedArticle({ transcription })
       if (article.error) {
         setIsLoading(false)
         setLoadingText("")
@@ -81,6 +83,10 @@ export default function Home() {
           <div className="space-y-2">
             <Label htmlFor="youtube-url">Youtube URL</Label>
             <Input name="youtube-url" placeholder="https://www.youtube.com/watch?v=..." value={url} onChange={(e) => setUrl(e.target.value)} />
+          </div>
+          <div className="mt-4 space-y-2">
+            <Label htmlFor="language">Language</Label>
+            <LanguageSelector name="language" value={language} onValueChange={setLanguage} required  />
           </div>
         </CardContent>
         <CardFooter>
