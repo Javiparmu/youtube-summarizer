@@ -6,7 +6,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeCallouts from 'rehype-callouts';
 import rehypeMathjax from 'rehype-mathjax';
 import 'rehype-callouts/theme/github'
-import { Article } from '@/app/domain/Article';
+import { Content } from '@/app/domain/Content';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select';
 
 const forbiddenTags = [
@@ -22,12 +22,12 @@ const forbiddenTags = [
   'html',
 ];
 
-interface ArticleShowcaseProps {
-	article: Article
+interface ContentShowcaseProps {
+	content: Content
 }
 
-const ArticleShowcase = ({ article }: ArticleShowcaseProps) => {
-	const [format, setFormat] = useState<string>("article")
+const ContentShowcase = ({ content }: ContentShowcaseProps) => {
+	const [format, setFormat] = useState<string>("content")
 
 	const transcriptionAreaRef = useRef<HTMLTextAreaElement>(null)
 	const markdownTextAreaRef = useRef<HTMLTextAreaElement>(null)
@@ -53,33 +53,33 @@ const ArticleShowcase = ({ article }: ArticleShowcaseProps) => {
 				<SelectContent>
 					<SelectGroup>
 						<SelectLabel>Format</SelectLabel>
-						<SelectItem value="article">Article</SelectItem>
+						<SelectItem value="content">Content</SelectItem>
 						<SelectItem value="markdown">Markdown</SelectItem>
 						<SelectItem value="transcription">Transcription</SelectItem>
 					</SelectGroup>
 				</SelectContent>
 			</Select>
-			{format === 'article' ? (
+			{format === 'content' ? (
 				<Markdown
 					className="w-full max-w-full text-wrap break-words prose mt-10"
 					disallowedElements={forbiddenTags}
 					remarkPlugins={[remarkGfm]}
 					rehypePlugins={[rehypeMathjax, [rehypeCallouts, { theme: 'github' }]]}
 				>
-					{article.content}
+					{content.content}
 				</Markdown>
 			) : format === 'markdown' ? (
 				<textarea
 					ref={markdownTextAreaRef}
 					className="resize-none w-full mt-6 p-4 bg-gray-100 rounded-lg"
-					value={article.content}
+					value={content.content}
 					readOnly
 				/>
 			) : (
 				<textarea
 					ref={transcriptionAreaRef}
 					className="resize-none w-full mt-6 p-4 bg-gray-100 rounded-lg"
-					value={article.transcription}
+					value={content.transcription}
 					readOnly
 				/>
 			)}
@@ -87,4 +87,4 @@ const ArticleShowcase = ({ article }: ArticleShowcaseProps) => {
   )
 }
 
-export default ArticleShowcase
+export default ContentShowcase

@@ -3,6 +3,7 @@ import { Inter as FontSans } from "next/font/google"
 
 import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/toaster"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -30,8 +31,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <main className="flex flex-col gap-2 min-h-screen items-center justify-center p-24">
-          {children}
-          <Toaster />
+          <TooltipProvider>
+            {children}
+            <Toaster />
+          </TooltipProvider>
         </main>
       </body>
     </html>

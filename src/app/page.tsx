@@ -7,12 +7,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { errorToast } from "@/lib/toast";
-import { getSeoOptimizedArticle } from "./actions/getSeoOptimizedArticle";
+import { getContentFromTranscription } from "./actions/getContentFromTranscription";
 import { getYoutubeVideoTranscription } from "./actions/getYoutubeVideoTranscription";
-import { createArticle } from "./actions/createArticle";
-import { extractArticleSlug } from "./domain/Article";
+import { createContent } from "./actions/createContent";
+import { extractContentSlug } from "./domain/Content";
 import { useRouter } from "next/navigation";
 import { LanguageSelector } from "@/components/language-selector";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { InfoIcon } from "lucide-react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { ContentType } from "./domain/ContentType";
 
 const sanitizeMarkdown = (text: string) => {
   return text
@@ -26,6 +30,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [loadingText, setLoadingText] = useState<string>("")
   const [language, setLanguage] = useState<string>("en")
+  const [contentType, setContentType] = useState<ContentType>(ContentType.BLOG_POST)
 
   const router = useRouter()
 
@@ -42,25 +47,26 @@ export default function Home() {
         return
       }
 
-      setLoadingText("Creating SEO optimized article...")
-      const article = await getSeoOptimizedArticle({ transcription })
-      if (article.error) {
+      setLoadingText("Creating content...")
+      const content = await getContentFromTranscription({ transcription, type: contentType })
+      if (content.error) {
         setIsLoading(false)
         setLoadingText("")
-        errorToast({ title: 'Error', description: article.error })
+        errorToast({ title: 'Error', description: content.error })
         return
       }
 
-      const sanitizedArticle = sanitizeMarkdown(article.article!)
-      const slug = extractArticleSlug(sanitizedArticle)
-      await createArticle({
+      const sanitizedContent = sanitizeMarkdown(content.content!)
+      const slug = extractContentSlug(sanitizedContent)
+      await createContent({
         slug,
         videoUrl: url,
-        content: sanitizeMarkdown(sanitizedArticle),
-        transcription
+        content: sanitizeMarkdown(sanitizedContent),
+        transcription,
+        type: contentType
       })
 
-      router.push(`/articles/${slug}`)
+      router.push(`/content/${slug}`)
     } catch (error) {
       setIsLoading(false)
       setLoadingText("")
@@ -76,17 +82,44 @@ export default function Home() {
     <div className="flex max-w-screen flex-col items-center justify-center p-8 md:p-16 lg:20 xl:p-24">
       <Card>
         <CardHeader>
-          <CardTitle>Youtube Summarizer</CardTitle>
+          <CardTitle>Youtube to Social</CardTitle>
           <CardDescription>Create a SEO optimize article from a Youtube video.</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex flex-col gap-4">
           <div className="space-y-2">
             <Label htmlFor="youtube-url">Youtube URL</Label>
             <Input name="youtube-url" placeholder="https://www.youtube.com/watch?v=..." value={url} onChange={(e) => setUrl(e.target.value)} />
           </div>
-          <div className="mt-4 space-y-2">
-            <Label htmlFor="language">Language</Label>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Label htmlFor="language">Language</Label>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <InfoIcon className="w-4 h-4 text-gray-600" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-sm">This must be the language of the original video.</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
             <LanguageSelector name="language" value={language} onValueChange={setLanguage} required  />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="youtube-url">Content type</Label>
+            <ToggleGroup type="single" onValueChange={(value) => setContentType(value as ContentType)} value={contentType}>
+              <ToggleGroupItem value={ContentType.BLOG_POST}  aria-label="Toggle article" className="border border-gray-200">
+                SEO Article
+              </ToggleGroupItem>
+              <ToggleGroupItem value={ContentType.TWITTER_POST} aria-label="Toggle twitter" className="border border-gray-200">
+                Twitter post
+              </ToggleGroupItem>
+              <ToggleGroupItem value={ContentType.LINKEDIN_POST} aria-label="Toggle linkedin" className="border border-gray-200">
+                Linkedin post
+              </ToggleGroupItem>
+              <ToggleGroupItem value={ContentType.FACEBOOK_POST} aria-label="Toggle facebook" className="border border-gray-200">
+                Facebook post
+              </ToggleGroupItem>
+            </ToggleGroup>
           </div>
         </CardContent>
         <CardFooter>
