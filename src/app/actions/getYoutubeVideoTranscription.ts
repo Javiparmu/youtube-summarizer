@@ -9,7 +9,7 @@ export const getYoutubeVideoTranscription = async (url: string, language: string
 
   if (!response.ok) {
     return {
-      error: 'There was an error getting the transcription. Please try again.'
+      error: 'There was an error getting the transcription. Please try again.',
     }
   }
 

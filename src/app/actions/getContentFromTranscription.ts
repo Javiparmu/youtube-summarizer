@@ -1,16 +1,25 @@
 'use server'
 
-import { ContentType } from "../domain/ContentType";
+import { ContentType } from '../domain/ContentType'
 
-type GetSeoOptimizedContentResponse = Promise<{
-  error: string;
-  content?: undefined;
-} | {
-  content: string;
-  error?: undefined;
-}>
+type GetSeoOptimizedContentResponse = Promise<
+  | {
+      error: string
+      content?: undefined
+    }
+  | {
+      content: string
+      error?: undefined
+    }
+>
 
-export const getContentFromTranscription = async ({ transcription, type }: { transcription: string, type: ContentType }): GetSeoOptimizedContentResponse => {
+export const getContentFromTranscription = async ({
+  transcription,
+  type,
+}: {
+  transcription: string
+  type: ContentType
+}): GetSeoOptimizedContentResponse => {
   const response = await fetch(`${process.env.API_URL}/generate-content`, {
     method: 'POST',
     headers: {
@@ -28,6 +37,6 @@ export const getContentFromTranscription = async ({ transcription, type }: { tra
   const data = await response.json()
 
   return {
-    content: data.text
+    content: data.text,
   }
 }

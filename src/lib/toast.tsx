@@ -1,6 +1,6 @@
-import { toast } from "@/components/ui/use-toast"
-import React from "react"
 import { AlertCircleIcon } from 'lucide-react'
+import React from 'react'
+import { toast } from '@/components/ui/use-toast'
 
 export const errorToast = ({
   title,

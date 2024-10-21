@@ -1,3 +1,27 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
+  "plugins": ["simple-import-sort", "unused-imports"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "trailingComma": "all",
+        "tabWidth": 2,
+        "printWidth": 120,
+        "semi": false,
+        "singleQuote": true,
+        "jsxBracketSameLine": false,
+        "endOfLine":"auto"
+      }
+    ],
+    "simple-import-sort/exports": "error",
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [["^\\u0000", "^node:", "^@?\\w", "^", "^\\."]]
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error"
+  }
 }

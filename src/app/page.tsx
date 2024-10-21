@@ -1,35 +1,35 @@
-'use client';
+'use client'
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { errorToast } from "@/lib/toast";
-import { getContentFromTranscription } from "./actions/getContentFromTranscription";
-import { getYoutubeVideoTranscription } from "./actions/getYoutubeVideoTranscription";
-import { createContent } from "./actions/createContent";
-import { extractContentSlug } from "./domain/Content";
-import { useRouter } from "next/navigation";
-import { LanguageSelector } from "@/components/language-selector";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { InfoIcon } from "lucide-react";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { ContentType } from "./domain/ContentType";
+import { InfoIcon } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import React from 'react'
+import { useState } from 'react'
+import { LanguageSelector } from '@/components/language-selector'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { errorToast } from '@/lib/toast'
+import { createContent } from './actions/createContent'
+import { getContentFromTranscription } from './actions/getContentFromTranscription'
+import { getYoutubeVideoTranscription } from './actions/getYoutubeVideoTranscription'
+import { extractContentSlug } from './domain/Content'
+import { ContentType } from './domain/ContentType'
 
 const sanitizeMarkdown = (text: string) => {
   return text
     .replace(/\u00A0/g, ' ')
     .replace(/\u200B/g, '')
-    .replace(/^[ \t]+/gm, '');
-};
+    .replace(/^[ \t]+/gm, '')
+}
 
 export default function Home() {
-  const [url, setUrl] = useState<string>("")
+  const [url, setUrl] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [loadingText, setLoadingText] = useState<string>("")
-  const [language, setLanguage] = useState<string>("en")
+  const [loadingText, setLoadingText] = useState<string>('')
+  const [language, setLanguage] = useState<string>('en')
   const [contentType, setContentType] = useState<ContentType>(ContentType.BLOG_POST)
 
   const router = useRouter()
@@ -38,20 +38,20 @@ export default function Home() {
     try {
       setIsLoading(true)
 
-      setLoadingText("Getting video transcription...")
+      setLoadingText('Getting video transcription...')
       const { transcription, error } = await getYoutubeVideoTranscription(url, language)
       if (error) {
         setIsLoading(false)
-        setLoadingText("")
+        setLoadingText('')
         errorToast({ title: 'Error', description: error })
         return
       }
 
-      setLoadingText("Creating content...")
+      setLoadingText('Creating content...')
       const content = await getContentFromTranscription({ transcription, type: contentType })
       if (content.error) {
         setIsLoading(false)
-        setLoadingText("")
+        setLoadingText('')
         errorToast({ title: 'Error', description: content.error })
         return
       }
@@ -63,13 +63,13 @@ export default function Home() {
         videoUrl: url,
         content: sanitizeMarkdown(sanitizedContent),
         transcription,
-        type: contentType
+        type: contentType,
       })
 
       router.push(`/content/${slug}`)
     } catch (error) {
       setIsLoading(false)
-      setLoadingText("")
+      setLoadingText('')
       errorToast({ title: 'Error', description: 'Please try again.' })
     }
   }
@@ -88,7 +88,12 @@ export default function Home() {
         <CardContent className="flex flex-col gap-4">
           <div className="space-y-2">
             <Label htmlFor="youtube-url">Youtube URL</Label>
-            <Input name="youtube-url" placeholder="https://www.youtube.com/watch?v=..." value={url} onChange={(e) => setUrl(e.target.value)} />
+            <Input
+              name="youtube-url"
+              placeholder="https://www.youtube.com/watch?v=..."
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+            />
           </div>
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -102,21 +107,41 @@ export default function Home() {
                 </TooltipContent>
               </Tooltip>
             </div>
-            <LanguageSelector name="language" value={language} onValueChange={setLanguage} required  />
+            <LanguageSelector name="language" value={language} onValueChange={setLanguage} required />
           </div>
           <div className="space-y-2">
             <Label htmlFor="youtube-url">Content type</Label>
-            <ToggleGroup type="single" onValueChange={(value) => setContentType(value as ContentType)} value={contentType}>
-              <ToggleGroupItem value={ContentType.BLOG_POST}  aria-label="Toggle article" className="border border-gray-200">
+            <ToggleGroup
+              type="single"
+              onValueChange={(value) => setContentType(value as ContentType)}
+              value={contentType}
+            >
+              <ToggleGroupItem
+                value={ContentType.BLOG_POST}
+                aria-label="Toggle article"
+                className="border border-gray-200"
+              >
                 SEO Article
               </ToggleGroupItem>
-              <ToggleGroupItem value={ContentType.TWITTER_POST} aria-label="Toggle twitter" className="border border-gray-200">
+              <ToggleGroupItem
+                value={ContentType.TWITTER_POST}
+                aria-label="Toggle twitter"
+                className="border border-gray-200"
+              >
                 Twitter post
               </ToggleGroupItem>
-              <ToggleGroupItem value={ContentType.LINKEDIN_POST} aria-label="Toggle linkedin" className="border border-gray-200">
+              <ToggleGroupItem
+                value={ContentType.LINKEDIN_POST}
+                aria-label="Toggle linkedin"
+                className="border border-gray-200"
+              >
                 Linkedin post
               </ToggleGroupItem>
-              <ToggleGroupItem value={ContentType.FACEBOOK_POST} aria-label="Toggle facebook" className="border border-gray-200">
+              <ToggleGroupItem
+                value={ContentType.FACEBOOK_POST}
+                aria-label="Toggle facebook"
+                className="border border-gray-200"
+              >
                 Facebook post
               </ToggleGroupItem>
             </ToggleGroup>
@@ -127,7 +152,7 @@ export default function Home() {
         </CardFooter>
       </Card>
     </div>
-  );
+  )
 }
 
 const ArticleLoading = ({ loadingText }: { loadingText: string }) => {
@@ -154,9 +179,7 @@ const ArticleLoading = ({ loadingText }: { loadingText: string }) => {
       </div>
       <span className="flex flex-col text-center font-medium text-gray-600">
         {loadingText}
-        <span className="font-medium text-gray-600">
-          This should take around 1 minute per 10 minutes of video.
-        </span>
+        <span className="font-medium text-gray-600">This should take around 1 minute per 10 minutes of video.</span>
       </span>
     </div>
   )

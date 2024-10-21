@@ -1,11 +1,13 @@
-import { YoutubeTranscript } from 'youtube-transcript';
+import { YoutubeTranscript } from 'youtube-transcript'
 
 export const transcriptYoutubeVideo = async (url: string) => {
-  const videoTranscription = await YoutubeTranscript.fetchTranscript(url);
+  const videoTranscription = await YoutubeTranscript.fetchTranscript(url)
 
-  const formattedTranscription = videoTranscription.map((transcript) => {
-    return transcript.text;
-  }).join(' ');
+  const formattedTranscription = videoTranscription
+    .map((transcript) => {
+      return transcript.text
+    })
+    .join(' ')
 
-  return formattedTranscription;
+  return formattedTranscription
 }
