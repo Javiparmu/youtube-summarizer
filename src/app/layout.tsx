@@ -24,7 +24,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
       <head />
       <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
-        <main className="flex flex-col gap-2 min-h-screen items-center justify-center p-24">
+        <main className="flex flex-col min-h-screen items-center justify-center">
           <TooltipProvider>
             {children}
             <Toaster />

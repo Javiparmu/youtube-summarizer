@@ -4,7 +4,6 @@ import 'rehype-callouts/theme/github'
 import React, { useEffect, useRef, useState } from 'react'
 import Markdown from 'react-markdown'
 import rehypeCallouts from 'rehype-callouts'
-import rehypeMathjax from 'rehype-mathjax'
 import remarkGfm from 'remark-gfm'
 import { Content } from '@/app/domain/Content'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select'
@@ -53,7 +52,7 @@ const ContentShowcase = ({ content }: ContentShowcaseProps) => {
           className="w-full max-w-full text-wrap break-words prose mt-10"
           disallowedElements={forbiddenTags}
           remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeMathjax, [rehypeCallouts, { theme: 'github' }]]}
+          rehypePlugins={[[rehypeCallouts, { theme: 'github' }]]}
         >
           {content.content}
         </Markdown>

@@ -7,6 +7,8 @@ import { useState } from 'react'
 import { LanguageSelector } from '@/components/language-selector'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { GoogleGeminiEffect } from '@/components/ui/google-gemini-effect'
+import { Icon } from '@/components/ui/icon'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
@@ -49,6 +51,7 @@ export default function Home() {
 
       setLoadingText('Creating content...')
       const content = await getContentFromTranscription({ transcription, type: contentType })
+      console.log(content)
       if (content.error) {
         setIsLoading(false)
         setLoadingText('')
@@ -79,11 +82,11 @@ export default function Home() {
   }
 
   return (
-    <div className="flex max-w-screen flex-col items-center justify-center p-8 md:p-16 lg:20 xl:p-24">
-      <Card>
+    <>
+      <Card className="max-w-[550px] rounded-xl border-2 border-slate-200 filter drop-shadow-xl">
         <CardHeader>
           <CardTitle>Youtube to Social</CardTitle>
-          <CardDescription>Create a SEO optimize article from a Youtube video.</CardDescription>
+          <CardDescription>Create content for socials from a Youtube video.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <div className="space-y-2">
@@ -103,55 +106,69 @@ export default function Home() {
                   <InfoIcon className="w-4 h-4 text-gray-600" />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="text-sm">This must be the language of the original video.</p>
+                  <p className="text-sm">Must be the language of the original video.</p>
                 </TooltipContent>
               </Tooltip>
             </div>
             <LanguageSelector name="language" value={language} onValueChange={setLanguage} required />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="youtube-url">Content type</Label>
+            <Label htmlFor="youtube-url">Content for</Label>
             <ToggleGroup
               type="single"
               onValueChange={(value) => setContentType(value as ContentType)}
               value={contentType}
+              className="flex flex-wrap"
             >
-              <ToggleGroupItem
-                value={ContentType.BLOG_POST}
-                aria-label="Toggle article"
-                className="border border-gray-200"
-              >
-                SEO Article
+              <ToggleGroupItem value={ContentType.BLOG_POST} aria-label="Toggle blog" className="flex gap-2 border">
+                <Icon
+                  icon="blog"
+                  className="inline-flex items-center justify-center w-4 h-4"
+                  iconClassName="w-full h-full"
+                />
+                Blog
               </ToggleGroupItem>
-              <ToggleGroupItem
-                value={ContentType.TWITTER_POST}
-                aria-label="Toggle twitter"
-                className="border border-gray-200"
-              >
-                Twitter post
+              <ToggleGroupItem value={ContentType.TWITTER_POST} aria-label="Toggle X" className="flex gap-2 border">
+                <Icon
+                  icon="xLogo"
+                  className="inline-flex items-center justify-center w-4 h-4"
+                  iconClassName="w-full h-full"
+                />
+                Twitter
               </ToggleGroupItem>
               <ToggleGroupItem
                 value={ContentType.LINKEDIN_POST}
                 aria-label="Toggle linkedin"
-                className="border border-gray-200"
+                className="flex gap-2 border"
               >
-                Linkedin post
+                <Icon
+                  icon="linkedinLogo"
+                  className="inline-flex items-center justify-center w-4 h-4"
+                  iconClassName="w-full h-full"
+                />
+                Linkedin
               </ToggleGroupItem>
               <ToggleGroupItem
                 value={ContentType.FACEBOOK_POST}
                 aria-label="Toggle facebook"
-                className="border border-gray-200"
+                className="flex gap-2 border"
               >
-                Facebook post
+                <Icon
+                  icon="facebookLogo"
+                  className="inline-flex items-center justify-center w-4 h-4"
+                  iconClassName="w-full h-full"
+                />
+                Facebook
               </ToggleGroupItem>
             </ToggleGroup>
           </div>
         </CardContent>
         <CardFooter>
-          <Button onClick={onCreateArticle}>Summarize video</Button>
+          <Button onClick={onCreateArticle}>Create content</Button>
         </CardFooter>
       </Card>
-    </div>
+      <GoogleGeminiEffect />
+    </>
   )
 }
 
