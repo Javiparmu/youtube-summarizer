@@ -15,7 +15,7 @@ const ContentPage = async ({ params }: ContentPageProps) => {
   const content = await getContentBySlug(params.slug)
 
   return (
-    <div className="xl:w-[800px] overflow-y-auto">
+    <div className="xl:w-[800px] overflow-y-auto py-16">
       <Button asChild>
         <Link href="/">
           <ArrowLeftIcon className="w-5 h-5 mr-1" />
