@@ -3,4 +3,7 @@ export enum ContentType {
   LINKEDIN_POST = 'linkedin-post',
   TWITTER_POST = 'twitter-post',
   FACEBOOK_POST = 'facebook-post',
+  QUIZ = 'quiz',
+  POLL = 'poll',
+  NEWSLETTER = 'newsletter',
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { InfoIcon } from 'lucide-react'
+import { GraduationCapIcon, InfoIcon, NewspaperIcon, VoteIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useState } from 'react'
@@ -49,6 +49,7 @@ export default function Home() {
         return
       }
 
+      console.log(transcription)
       setLoadingText('Creating content...')
       const content = await getContentFromTranscription({ transcription, type: contentType })
       console.log(content)
@@ -118,7 +119,7 @@ export default function Home() {
               type="single"
               onValueChange={(value) => setContentType(value as ContentType)}
               value={contentType}
-              className="flex flex-wrap"
+              className="flex flex-wrap justify-start"
             >
               <ToggleGroupItem value={ContentType.BLOG_POST} aria-label="Toggle blog" className="flex gap-2 border">
                 <Icon
@@ -159,6 +160,22 @@ export default function Home() {
                   iconClassName="w-full h-full"
                 />
                 Facebook
+              </ToggleGroupItem>
+              <ToggleGroupItem value={ContentType.QUIZ} aria-label="Toggle facebook" className="flex gap-2 border">
+                <GraduationCapIcon className="w-4 h-4" />
+                Quizz
+              </ToggleGroupItem>
+              <ToggleGroupItem value={ContentType.POLL} aria-label="Toggle poll" className="flex gap-2 border">
+                <VoteIcon className="w-4 h-4" />
+                Poll
+              </ToggleGroupItem>
+              <ToggleGroupItem
+                value={ContentType.NEWSLETTER}
+                aria-label="Toggle newsletter"
+                className="flex gap-2 border"
+              >
+                <NewspaperIcon className="w-4 h-4" />
+                Newsletter
               </ToggleGroupItem>
             </ToggleGroup>
           </div>
